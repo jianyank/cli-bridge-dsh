@@ -6,7 +6,7 @@ const root = fileURLToPath(new URL('../', import.meta.url))
 const result = await build({
   absWorkingDir: root, entryPoints: ['client/index.js'],
   bundle: true, write: false, platform: 'browser', format: 'cjs',
-  external: ['react', '@deepseek-ai/dsh-client-ui-primitives', '@xterm/xterm'],
+  external: ['react', '@deepseek-ai/dsh-client-ui-primitives'],
 })
 const css = await readFile(new URL('../client/terminal.css', import.meta.url), 'utf8')
 const source = [

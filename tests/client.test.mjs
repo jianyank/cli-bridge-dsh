@@ -31,16 +31,18 @@ test('manifest publishes the xterm client and shell overlay', async () => {
 
 test('published client registers the collapsible CLI overlay slot', async () => {
   const source = await readFile(new URL('../dist/client.js', import.meta.url), 'utf8')
+  assert.equal(source.includes('require("@xterm/xterm")'), false)
   let loaded
   let registration
   const style = {}
   runInNewContext(source, {
+    navigator: { userAgent: 'node', platform: 'Win32' },
     window: { __ModuleLoader__: { load: (entry) => { loaded = entry } } },
     document: { createElement: () => ({ dataset: {} }), head: { append: (value) => Object.assign(style, value) } },
   })
   assert.equal(loaded.id, 'dsh-cli-bridge')
   const plugin = loaded.factory((name) => {
-    assert.ok(['react', '@deepseek-ai/dsh-client-ui-primitives', '@xterm/xterm'].includes(name))
+    assert.ok(['react', '@deepseek-ai/dsh-client-ui-primitives'].includes(name))
     return {}
   })
   assert.equal(JSON.stringify(plugin.inject), JSON.stringify(['slots']))
