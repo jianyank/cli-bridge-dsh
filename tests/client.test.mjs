@@ -22,14 +22,16 @@ test('client commands use JSON and surface bridge errors', async () => {
   assert.deepEqual(JSON.parse(sent.body), { terminalId: 'term_test', data: 'hi', enter: true })
 })
 
-test('manifest publishes the xterm client and shell overlay', async () => {
+test('manifest publishes the xterm client and conversation dock', async () => {
   const manifest = JSON.parse(await readFile(new URL('../package.json', import.meta.url)))
   assert.equal(manifest.exports['./client'], './dist/client.js')
   assert.ok(manifest.dsh.client.inject.includes('@deepseek-ai/dsh-client-ui-slots'))
+  assert.ok(manifest.dsh.client.inject.includes('@deepseek-ai/dsh-client-ui-conversation'))
+  assert.equal(manifest.dsh.client.immediately, true)
   assert.ok(manifest.files.includes('dist'))
 })
 
-test('published client registers the collapsible CLI overlay slot', async () => {
+test('published client registers the collapsible CLI conversation dock', async () => {
   const source = await readFile(new URL('../dist/client.js', import.meta.url), 'utf8')
   assert.equal(source.includes('require("@xterm/xterm")'), false)
   let loaded
@@ -47,7 +49,7 @@ test('published client registers the collapsible CLI overlay slot', async () => 
   })
   assert.equal(JSON.stringify(plugin.inject), JSON.stringify(['slots']))
   plugin.apply({ slots: {
-    inject: (name, callback) => { assert.equal(name, 'shell.overlay'); callback() },
+    inject: (name, callback) => { assert.equal(name, 'conversation.composer.dock'); callback() },
     register: (entry, component) => { registration = entry; assert.equal(typeof component, 'function') },
   } })
   assert.equal(registration.id, 'dsh-cli-bridge')

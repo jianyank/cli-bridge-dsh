@@ -6282,8 +6282,8 @@ function CliBridgePanel() {
   );
 }
 function apply(ctx) {
-  ctx.slots.inject("shell.overlay", () => ctx.slots.register({
-    name: "shell.overlay",
+  ctx.slots.inject("conversation.composer.dock", () => ctx.slots.register({
+    name: "conversation.composer.dock",
     id: "dsh-cli-bridge",
     order: 40,
     label: () => "CLI \u7EC8\u7AEF",

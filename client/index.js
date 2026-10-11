@@ -137,8 +137,8 @@ export function CliBridgePanel() {
 }
 
 export function apply(ctx) {
-  ctx.slots.inject('shell.overlay', () => ctx.slots.register({
-    name: 'shell.overlay', id: 'dsh-cli-bridge', order: 40,
+  ctx.slots.inject('conversation.composer.dock', () => ctx.slots.register({
+    name: 'conversation.composer.dock', id: 'dsh-cli-bridge', order: 40,
     label: () => 'CLI 终端', inject: () => ({}),
   }, CliBridgePanel))
 }
